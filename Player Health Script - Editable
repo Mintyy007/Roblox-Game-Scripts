@@ -7,7 +7,7 @@ local humanoid = character.Humanoid
 local REGEN_DELAY = 5
 local REGEN_RATE = 10
 
-local lastHealth = humanoid.Health * 100
+local lastHealth = humanoid.Health
 local lastDamageTime = 0
 
 local function onHeartbeat(deltaTime: number)

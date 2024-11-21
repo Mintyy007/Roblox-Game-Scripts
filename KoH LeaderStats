@@ -13,6 +13,7 @@ local safePlayerAdded = require(ReplicatedStorage.Utility.safePlayerAdded)
 
 local Scoring = {}
 local currentPlayerCash = 0
+local currRank
 
 local function updateTeamScore(team: Team)
 	-- Since the default leaderstats system doesn't have an easy way to check team stats, we'll manually
@@ -30,6 +31,23 @@ local function updateTeamScore(team: Team)
 	team:SetAttribute(Constants.TEAM_SCORE_ATTRIBUTE, score)
 end
 
+local function updateRank() 
+	if currRank < 1200 then
+		currRank.Value = 0
+	end
+	if currRank >= 1200 then
+		currRank.Value = 3
+	end
+	
+	if currRank >= 2500 then
+		currRank.Value = 2
+	end
+	
+	if currRank >= 5000 then
+		currRank.Value = 1
+	end
+end
+
 local function onPlayerAdded(player: Player)
 	local leaderstats = Instance.new("Folder")
 	leaderstats.Name = "leaderstats"
@@ -45,12 +63,17 @@ local function onPlayerAdded(player: Player)
 	currentPlayerCash.Value = 0
 	currentPlayerCash.Parent = leaderstats	
 	
+	currRank = Instance.new("IntValue")
+	currRank.Name = "Rank"
+	currRank.Value = 0
+	currRank.Parent = leaderstats	
 
 	-- Each time the player's score changes, update the total score for the team they're on
 	score.Changed:Connect(function()
 		if player.Team then
 
 			updateTeamScore(player.Team)
+			updateRank()
 		end
 	end)
 	

@@ -1,0 +1,29 @@
+wait(1)
+player = game.Players.LocalPlayer
+button = script.Parent
+local debounce = false
+
+local bailOutChance = 0
+
+local userInputService = game:GetService("UserInputService")
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+	if input.KeyCode == Enum.KeyCode.B and bailOutChance < 1 then
+		debounce = false
+		bailOutChance += 1
+		teleport()
+	end
+end)
+
+function teleport()
+	if not debounce then
+		debounce = true
+		LowerTorso = player.Character.LowerTorso
+		LowerTorso.CFrame = game.Workspace.BailOutArea.CFrame
+	end
+end
+
+button.MouseButton1Click:Connect(teleport)
+while true do wait()
+	debounce = false
+	wait(1)
+end
